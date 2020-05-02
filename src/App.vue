@@ -6,10 +6,18 @@
          <searched ref="searched" />
       </header>
       <div v-show="voiceAnimationEnd" class="container">
-         <info-card class="info-card active" />
+         <container @drop="onDrop" lock-axis="y" drop-class="drop-class">
+            <draggable v-for="invoice in invoices" :key="invoice.id">
+               <info-card
+                  :info="invoice"
+                  class="info-card"
+                  :class="invoice.active && 'active'"
+               />
+            </draggable>
+         </container>
+         <!-- <info-card class="info-card" />
          <info-card class="info-card" />
-         <info-card class="info-card" />
-         <info-card class="info-card" />
+         <info-card class="info-card" /> -->
       </div>
    </div>
 </template>
@@ -20,11 +28,22 @@ import VoiceToText from "@/components/VoiceToText";
 import InfoCard from "@/components/InfoCard";
 import { gsap } from "gsap";
 import { mapGetters } from "vuex";
+import { Container, Draggable } from "vue-smooth-dnd";
 export default {
    name: "App",
-   components: { Searched, VoiceToText, InfoCard },
+   components: { Searched, VoiceToText, InfoCard, Container, Draggable },
    computed: {
       ...mapGetters(["voiceAnimationEnd"]),
+   },
+   data() {
+      return {
+         invoices: [
+            { id: 1, name: "Invoice 1", active: true },
+            { id: 2, name: "Invoice 2", active: false },
+            { id: 3, name: "Invoice 3", active: false },
+            { id: 4, name: "Invoice 4", active: false },
+         ],
+      };
    },
    methods: {
       startAnimation() {
@@ -39,6 +58,26 @@ export default {
             )
             .from(btnImg, { opacity: 0 })
             .from(searched.$el, { opacity: 0, x: 25 }, "-=1");
+      },
+      onDrop(dropResult) {
+         this.invoices = this.applyDrag(this.invoices, dropResult);
+      },
+      applyDrag(arr, dragResult) {
+         const { removedIndex, addedIndex, payload } = dragResult;
+         if (removedIndex === null && addedIndex === null) return arr;
+
+         const result = [...arr];
+         let itemToAdd = payload;
+
+         if (removedIndex !== null) {
+            itemToAdd = result.splice(removedIndex, 1)[0];
+         }
+
+         if (addedIndex !== null) {
+            result.splice(addedIndex, 0, itemToAdd);
+         }
+
+         return result;
       },
    },
    watch: {
@@ -74,8 +113,9 @@ header {
    display: flex;
    flex-direction: column;
    justify-content: center;
-   .info-card {
-      height: 100%;
+   .info-card,
+   .smooth-dnd-draggable-wrapper {
+      // height: 100%;
       display: flex;
       justify-self: center;
       align-self: center;
@@ -98,5 +138,15 @@ header {
          }
       }
    }
+}
+
+// Draggable styling
+.smooth-dnd-container {
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+}
+.drop-class {
+   background: black;
 }
 </style>

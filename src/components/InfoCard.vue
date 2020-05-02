@@ -1,7 +1,12 @@
 <template>
-   <div class="card">Info Card</div>
+   <div class="card">{{ info.name }}</div>
 </template>
 
+<script>
+export default {
+   props: ["info"],
+};
+</script>
 <style lang="scss" scoped>
 .card {
    max-width: 650px;
@@ -12,5 +17,6 @@
    border-radius: 8px;
    background: #fff;
    box-shadow: 0px 0px 18px -13px rgba(0, 0, 0, 0.5);
+   display: flex;
 }
 </style>
