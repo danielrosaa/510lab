@@ -120,6 +120,17 @@ export default {
             activeCursor: "context-menu",
             dragResistance: 0.8,
             zIndexBoost: false,
+            onMove() {
+               gsap.to("#infoCard0", {
+                  clearProps: "all",
+                  opacity: 0,
+                  scale:
+                     this.getDirection() === "up"
+                        ? 1 + (this.y / 1000) * -1
+                        : 1 + this.y / 1000,
+                  y: 105,
+               });
+            },
             onDragEnd() {
                if (this.y <= -20 || this.y >= 20) {
                   gsap.to("#infoCard0", {
