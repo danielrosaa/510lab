@@ -140,8 +140,7 @@ export default {
          });
       },
       moreInfoAnimation() {
-         // let { cardsContainer } = this.$refs;
-         // console.log(cardsContainer.clientWidth);
+         let { cardsContainer } = this.$refs;
          gsap.registerPlugin(Draggable);
          Draggable.create(".cards-container", {
             type: "x",
@@ -165,7 +164,8 @@ export default {
             },
             onMove() {
                if (this.getDirection() === "left") {
-                  if (this.x < window.innerWidth * -0.7) {
+                  // Sets limit when scrolling left
+                  if (this.x < cardsContainer.scrollWidth * -0.43) {
                      this.endDrag();
                      gsap.to(".cards-container", {
                         x: this.x + 20, // Plus the x moved by inertia above
@@ -271,11 +271,8 @@ header {
    }
 
    .info-card {
-      // height: 100%;
-      // display: flex;
       justify-self: center;
       align-self: center;
-      // align-items: center;
       position: absolute;
       &.active {
          opacity: 1 !important;
