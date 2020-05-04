@@ -93,6 +93,14 @@ export default {
    }
 
    .header {
+      .status {
+         color: $warningColor;
+         border: 1px solid $warningColor;
+         border-radius: 20px;
+         padding: 5px 10px;
+         font-size: $fontSizeSM;
+         font-weight: 400;
+      }
    }
    .info {
       margin-bottom: 20px;

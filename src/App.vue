@@ -224,8 +224,10 @@ header {
 // .info-card-container {
 .cards-container {
    width: 100%;
+   height: 100%;
    display: inline-flex;
    justify-content: space-between;
+   align-items: center;
    padding-left: 100px;
 
    .test-info {
