@@ -6,7 +6,7 @@
             <img ref="btnImg" src="@/assets/img/button-el.png" />
             <searched ref="searched" />
          </header>
-         <div class="cards-container">
+         <div ref="cardsContainer" class="cards-container">
             <div class="test-info">
                <info-card
                   :id="'infoCard' + index"
@@ -120,18 +120,7 @@ export default {
             activeCursor: "context-menu",
             dragResistance: 0.8,
             zIndexBoost: false,
-            onMove() {
-               gsap.to("#infoCard0", {
-                  clearProps: "all",
-                  opacity: 0,
-                  scale:
-                     this.getDirection() === "up"
-                        ? 1 + (this.y / 1000) * -1
-                        : 1 + this.y / 1000,
-                  y: 105,
-               });
-            },
-            onDragEnd() {
+            onRelease() {
                if (this.y <= -20 || this.y >= 20) {
                   gsap.to("#infoCard0", {
                      clearProps: "all",
@@ -151,25 +140,53 @@ export default {
          });
       },
       moreInfoAnimation() {
+         // let { cardsContainer } = this.$refs;
+         // console.log(cardsContainer.clientWidth);
          gsap.registerPlugin(Draggable);
          Draggable.create(".cards-container", {
             type: "x",
             inertia: false,
             cursor: "context-menu",
             activeCursor: "context-menu",
-            dragResistance: 0.9,
+            dragResistance: 0.4,
             zIndexBoost: false,
-            onDragEnd() {
-               console.log(this.getDirection());
-               if (this.getDirection() === "left") {
+            onRelease() {
+               if (this.getDirection() === "left")
                   gsap.fromTo(
-                     ".test-agent",
-                     { opacity: 0 },
-                     { opacity: 1, display: "inline-flex" }
+                     ".cards-container",
+                     {
+                        x: this.x,
+                     },
+                     {
+                        duration: 0.5,
+                        x: this.x - 20, // Adds inertia to drag
+                     }
                   );
-                  gsap.to(".test-info", { justifyContent: "end" });
+            },
+            onMove() {
+               if (this.getDirection() === "left") {
+                  if (this.x < window.innerWidth * -0.7) {
+                     this.endDrag();
+                     gsap.to(".cards-container", {
+                        x: this.x + 20, // Plus the x moved by inertia above
+                     });
+                  }
+                  gsap.to(".test-agent", {
+                     duration: 1,
+                     opacity: 1,
+                  });
                } else {
-                  gsap.to(".test-info", { x: this.x * -1 });
+                  gsap
+                     .timeline({ defaults: { duration: 1 } })
+                     .to(".test-agent", {
+                        opacity: 0,
+                     })
+                     .fromTo(
+                        ".cards-container",
+                        { x: this.x },
+                        { x: 0 },
+                        "-=1"
+                     );
                }
             },
          });
@@ -213,22 +230,18 @@ header {
    align-items: center;
 }
 .info-agent-container {
-   // display: none;
-   // opacity: 0;
    display: inline-flex;
    align-items: center;
    .card:first-child {
       margin-right: 50px;
    }
 }
-// .info-card-container {
 .cards-container {
    width: 100%;
    height: 100%;
    display: inline-flex;
    justify-content: space-between;
    align-items: center;
-   padding-left: 100px;
 
    .test-info {
       display: inline-flex;
@@ -237,11 +250,23 @@ header {
    }
 
    .test-agent {
-      display: none;
-      // opacity: 0;
-      transform: translateX(300px);
+      display: inline-flex;
+      opacity: 0;
+      position: absolute;
+      left: 915px;
+      transform: translateX(200px);
       .info-agent:first-child {
          margin-right: 40px;
+      }
+   }
+   @media (max-width: 1280px) {
+      .test-agent {
+         transform: translateX(100px);
+      }
+   }
+   @media (min-width: 1441px) {
+      .test-agent {
+         transform: translateX(450px);
       }
    }
 

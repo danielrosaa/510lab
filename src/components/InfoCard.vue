@@ -9,7 +9,7 @@
 
       <div class="info">
          <div class="left">
-            <div class="label">Invoice</div>
+            <div class="label">Invoice {{ info.id }}</div>
             <div class="result">H3110017</div>
          </div>
          <div class="right">
