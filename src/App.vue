@@ -245,10 +245,10 @@ header {
 
    .info-card {
       // height: 100%;
-      display: flex;
+      // display: flex;
       justify-self: center;
       align-self: center;
-      align-items: center;
+      // align-items: center;
       position: absolute;
       &.active {
          opacity: 1 !important;
