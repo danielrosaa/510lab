@@ -9,14 +9,23 @@
          <div ref="cardsContainer" class="cards-container">
             <div class="test-info">
                <info-card
-                  :id="'infoCard' + index"
+                  :id="'infoCard' + invoice.id"
                   draggable
-                  v-for="(invoice, index) in invoices"
+                  v-for="invoice in invoices"
                   :key="invoice.id"
                   :info="invoice"
                   class="info-card"
                   :class="invoice.active && 'active'"
                />
+               <!-- <div class="navigator">
+                  <div
+                     v-for="(n, index) in invoices"
+                     :key="n.id"
+                     :ref="'navCircle' + index"
+                     class="circle"
+                     :class="n.active && 'darker'"
+                  ></div>
+               </div> -->
             </div>
             <div class="test-agent">
                <agent-info
@@ -106,6 +115,7 @@ export default {
                   el.active = false;
                } else {
                   el.active = true;
+                  this.activeCard = el;
                }
             });
             const firstEl = this.invoices.splice(0, 1);
@@ -121,14 +131,25 @@ export default {
             dragResistance: 0.8,
             zIndexBoost: false,
             onRelease() {
-               if (this.y <= -20 || this.y >= 20) {
-                  gsap.to("#infoCard0", {
-                     clearProps: "all",
-                     duration: 0.5,
-                     opacity: 0.15,
-                     scale: 0.72,
-                     y: 105,
-                  });
+               if (this.y <= -20) {
+                  gsap
+                     .timeline()
+                     .to(".info-card:first-child", {
+                        clearProps: "transform",
+                        duration: 0.5,
+                        opacity: 0.15,
+                        scale: 0.72,
+                        y: 105,
+                     })
+                     .to(
+                        ".info-card:nth-child(2)",
+                        {
+                           clearProps: "transform",
+                           duration: 0.5,
+                           opacity: 1,
+                        },
+                        "-=0.5"
+                     );
                   rearrangeInvoices();
                } else {
                   gsap.to(".active", {
@@ -274,10 +295,6 @@ header {
       justify-self: center;
       align-self: center;
       position: absolute;
-      &.active {
-         opacity: 1 !important;
-         transform: translateX(0) scale(1);
-      }
       @for $i from 1 through 3 {
          &:not(.active):nth-child(#{$i + 1}) {
             z-index: -1;
@@ -293,6 +310,22 @@ header {
             filter: blur(1px * $i);
             transform: translateY($i * 35px) scale(1.02 - ($i/10));
          }
+      }
+   }
+}
+.navigator {
+   z-index: 5;
+   position: relative;
+   top: 40vh;
+   display: inline-flex;
+   .circle {
+      background: $textColorLight;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      margin: 0 15px;
+      &.darker {
+         background: $textColorDark;
       }
    }
 }
