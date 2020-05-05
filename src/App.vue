@@ -346,7 +346,7 @@ header {
       padding-left: 0;
       img {
          width: 50px;
-         height: 100%;
+         height: 50px;
       }
       .searched {
          width: 80%;
