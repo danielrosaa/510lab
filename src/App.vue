@@ -4,7 +4,7 @@
       <div v-show="voiceAnimationEnd" class="container">
          <header v-show="voiceAnimationEnd">
             <img ref="btnImg" src="@/assets/img/button-el.png" />
-            <searched ref="searched" />
+            <searched class="searched" ref="searched" />
          </header>
          <div ref="cardsContainer" class="cards-container">
             <div class="test-info">
@@ -326,6 +326,107 @@ header {
       margin: 0 15px;
       &.darker {
          background: $textColorDark;
+      }
+   }
+}
+@media (max-width: 400px) {
+   header {
+      width: 100vw;
+      justify-content: center;
+      padding-left: 0;
+      img {
+         width: 50px;
+         height: auto;
+      }
+      .searched {
+         width: 80%;
+         font-size: $fontSizeSM;
+      }
+   }
+   .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+   }
+   .info-agent-container {
+      display: inline-flex;
+      align-items: center;
+      .card:first-child {
+         margin-right: 50px;
+      }
+   }
+   .cards-container {
+      width: 100%;
+      height: 100%;
+      display: inline-flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .test-info {
+         display: inline-flex;
+         width: 100%;
+         justify-content: center;
+         font-size: $fontSizeSM;
+      }
+
+      .test-agent {
+         display: inline-flex;
+         opacity: 0;
+         position: absolute;
+         left: 915px;
+         transform: translateX(200px);
+         .info-agent:first-child {
+            margin-right: 40px;
+         }
+      }
+      @media (max-width: 1280px) {
+         .test-agent {
+            transform: translateX(100px);
+         }
+      }
+      @media (min-width: 1441px) {
+         .test-agent {
+            transform: translateX(450px);
+         }
+      }
+
+      .info-card {
+         justify-self: center;
+         align-self: center;
+         position: absolute;
+         @for $i from 1 through 3 {
+            &:not(.active):nth-child(#{$i + 1}) {
+               z-index: -1;
+               @if $i == 1 {
+                  opacity: 0.5;
+               }
+               @if $i == 2 {
+                  opacity: 0.3;
+               }
+               @if $i == 3 {
+                  opacity: 0.15;
+               }
+               filter: blur(1px * $i);
+               transform: translateY($i * 35px) scale(1.02 - ($i/10));
+            }
+         }
+      }
+   }
+   .navigator {
+      z-index: 5;
+      position: relative;
+      top: 40vh;
+      display: inline-flex;
+      .circle {
+         background: $textColorLight;
+         width: 5px;
+         height: 5px;
+         border-radius: 50%;
+         margin: 0 15px;
+         &.darker {
+            background: $textColorDark;
+         }
       }
    }
 }

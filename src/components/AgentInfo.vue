@@ -106,4 +106,52 @@ export default {
       }
    }
 }
+@media (max-width: 400px) {
+   .card {
+      max-width: 450px;
+      max-height: 330px;
+      width: 65vw;
+      height: 50vh;
+      padding: 60px 50px;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0px 0px 18px -13px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      font-size: $fontSizeSM;
+      font-weight: 400;
+      line-height: 25px;
+      hr {
+         width: 100%;
+         border-top: 1px solid $textColorLight;
+         margin: 20px 0;
+      }
+      .content {
+         transform: translateY(-35px);
+         .label,
+         .result {
+            font-size: $fontSizeSM;
+            display: inline-flex;
+            width: 50%;
+         }
+         .label {
+            font-weight: 300;
+         }
+         .result {
+            font-weight: 400;
+         }
+         .nature,
+         .address {
+            line-height: 20px;
+         }
+         .nature {
+            color: $infoColor;
+            text-transform: capitalize;
+            font-size: $fontSize;
+            font-weight: 300;
+            margin-bottom: 15px;
+         }
+      }
+   }
+}
 </style>

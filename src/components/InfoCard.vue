@@ -126,4 +126,23 @@ export default {
       }
    }
 }
+@media (max-width: 400px) {
+   .card {
+      max-width: 580px;
+      max-height: 330px;
+      width: 65vw;
+      height: 50vh;
+      padding: 40px;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0px 0px 18px -13px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      .logo {
+         width: 80px;
+         height: auto;
+         margin-bottom: 20px;
+      }
+   }
+}
 </style>
