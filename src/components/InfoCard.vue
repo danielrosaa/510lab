@@ -126,7 +126,7 @@ export default {
       }
    }
 }
-@media (max-width: 400px) {
+@media (max-width: 450px) {
    .card {
       max-width: 580px;
       max-height: 330px;

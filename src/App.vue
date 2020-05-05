@@ -185,12 +185,22 @@ export default {
             },
             onMove() {
                if (this.getDirection() === "left") {
-                  // Sets limit when scrolling left
-                  if (this.x < cardsContainer.scrollWidth * -0.43) {
-                     this.endDrag();
-                     gsap.to(".cards-container", {
-                        x: this.x + 20, // Plus the x moved by inertia above
-                     });
+                  // Small devices
+                  if (cardsContainer.clientWidth < 500) {
+                     if (this.x < cardsContainer.scrollWidth * -0.7) {
+                        this.endDrag();
+                        gsap.to(".cards-container", {
+                           x: this.x + 20, // Plus the x moved by inertia above
+                        });
+                     }
+                  } else {
+                     // Sets limit when scrolling left
+                     if (this.x < cardsContainer.scrollWidth * -0.43) {
+                        this.endDrag();
+                        gsap.to(".cards-container", {
+                           x: this.x + 20, // Plus the x moved by inertia above
+                        });
+                     }
                   }
                   gsap.to(".test-agent", {
                      duration: 1,
@@ -329,14 +339,14 @@ header {
       }
    }
 }
-@media (max-width: 400px) {
+@media (max-width: 450px) {
    header {
       width: 100vw;
       justify-content: center;
       padding-left: 0;
       img {
          width: 50px;
-         height: auto;
+         height: 100%;
       }
       .searched {
          width: 80%;
@@ -374,58 +384,9 @@ header {
          display: inline-flex;
          opacity: 0;
          position: absolute;
-         left: 915px;
-         transform: translateX(200px);
+         left: 400px;
          .info-agent:first-child {
             margin-right: 40px;
-         }
-      }
-      @media (max-width: 1280px) {
-         .test-agent {
-            transform: translateX(100px);
-         }
-      }
-      @media (min-width: 1441px) {
-         .test-agent {
-            transform: translateX(450px);
-         }
-      }
-
-      .info-card {
-         justify-self: center;
-         align-self: center;
-         position: absolute;
-         @for $i from 1 through 3 {
-            &:not(.active):nth-child(#{$i + 1}) {
-               z-index: -1;
-               @if $i == 1 {
-                  opacity: 0.5;
-               }
-               @if $i == 2 {
-                  opacity: 0.3;
-               }
-               @if $i == 3 {
-                  opacity: 0.15;
-               }
-               filter: blur(1px * $i);
-               transform: translateY($i * 35px) scale(1.02 - ($i/10));
-            }
-         }
-      }
-   }
-   .navigator {
-      z-index: 5;
-      position: relative;
-      top: 40vh;
-      display: inline-flex;
-      .circle {
-         background: $textColorLight;
-         width: 5px;
-         height: 5px;
-         border-radius: 50%;
-         margin: 0 15px;
-         &.darker {
-            background: $textColorDark;
          }
       }
    }
